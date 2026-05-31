@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PowerTeam 接龍｜BNI 資源媒合</title>
+<script>
+/* LINE 內建瀏覽器自動跳手機系統瀏覽器（共用自 from.html commit 4ad9e8e）。
+   LINE WebView 的 UA 含 "Line/"，偵測到就補 openExternalBrowser=1 再跳轉，
+   LINE 讀到此參數會改用 Safari/Chrome 開，避開 LINE 瀏覽器的快取/cookie 怪問題。
+   不改發出去的網址，LINE 群裡的舊連結照用，點開「閃一下」就跳出去。 */
+(function () {
+  var ua = navigator.userAgent || '';
+  if (/Line\//.test(ua) && !new URL(location.href).searchParams.has('openExternalBrowser')) {
+    var url = new URL(location.href);
+    url.searchParams.set('openExternalBrowser', '1');
+    window.location.href = url.toString();
+  }
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
