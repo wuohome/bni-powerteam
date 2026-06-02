@@ -515,8 +515,9 @@
     .chain-actions { flex-direction: column; }
     .identity { padding: 22px; }
     .sticky-bar { padding: 10px 16px 11px; }
+    .sticky-bar-inner { flex-direction: column; align-items: flex-start; gap: 5px; }
     .sticky-bar-selections { gap: 12px; }
-    .sticky-bar-hint { display: none; }
+    .sticky-bar-hint { white-space: normal; color: var(--gold-bright); font-size: 12px; }
   }
 
   /* Fade in animation */
@@ -541,7 +542,7 @@
   <header>
     <div class="eyebrow">BNI Hua Urban+ Power Team</div>
     <h1>五條鏈<br>共構彼此事業</h1>
-    <p class="subtitle">繼上次九宮格工作坊後，我們彙整出 5 條 PowerTeam 鏈。<br>請選出你「最厲害的」與「最想要的」資源，找到屬於你的成案夥伴。<br><span style="color:var(--gold-deep);font-size:13px;">⭐️ 最厲害的、❤️ 最想要的，各選 1 個（可以是同一條鏈）</span></p>
+    <p class="subtitle">繼上次九宮格工作坊後，我們彙整出 5 條 PowerTeam 鏈。<br>請選出你「最厲害的」與「最想要的」資源，找到屬於你的成案夥伴。<br><span style="color:var(--gold-bright);font-size:13px;">⭐️ 最厲害的、❤️ 最想要的 各選 1 個 —— 建議選「同一條鏈」💡</span></p>
     <div class="deadline">6 / 5 截止</div>
   </header>
 
@@ -576,7 +577,7 @@
         <span class="sticky-bar-value" id="barHeart">尚未選擇</span>
       </div>
     </div>
-    <div class="sticky-bar-hint">⭐️ 最厲害的、❤️ 最想要的，可以是同一條</div>
+    <div class="sticky-bar-hint">💡 建議 ⭐️ 和 ❤️ 選「同一條鏈」</div>
   </div>
 </div>
 
