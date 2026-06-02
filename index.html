@@ -242,8 +242,33 @@
     color: var(--gold-bright);
     font-size: 14px;
     letter-spacing: 0.05em;
-    margin-bottom: 18px;
+    margin-bottom: 12px;
     font-weight: 400;
+  }
+
+  .chain-leader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    font-size: 13px;
+  }
+
+  .chain-leader-label {
+    color: var(--ink-dim);
+    letter-spacing: 0.06em;
+  }
+
+  .chain-leader-sep {
+    color: var(--gold-deep);
+    font-size: 11px;
+  }
+
+  .chain-leader-name {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 500;
+    color: var(--gold-bright);
+    letter-spacing: 0.04em;
   }
 
   .chain-tags {
@@ -363,6 +388,124 @@
     color: #d96a58;
   }
 
+  /* STICKY STATUS BAR */
+  .sticky-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(22, 20, 15, 0.95);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--gold-deep);
+    padding: 12px 24px 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    /* 初始隱藏：往上移出視窗 */
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sticky-bar.visible {
+    transform: translateY(0);
+  }
+
+  .sticky-bar-inner {
+    max-width: 880px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .sticky-bar-selections {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+
+  .sticky-bar-item {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .sticky-bar-label {
+    color: var(--ink-dim);
+    flex-shrink: 0;
+  }
+
+  .sticky-bar-value {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 500;
+    color: var(--ink-dim);
+    font-size: 13px;
+    transition: color 0.25s;
+  }
+
+  .sticky-bar-value.chosen-star {
+    color: var(--gold-bright);
+  }
+
+  .sticky-bar-value.chosen-heart {
+    color: #d96a58;
+  }
+
+  .sticky-bar-hint {
+    font-size: 11px;
+    color: var(--gold-deep);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* TOAST（被擋提示，頂部浮動，z-index 高於 sticky bar） */
+  .toast {
+    position: fixed;
+    top: 68px; /* sticky bar 高約 46px + 22px 間距，不重疊 */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    background: rgba(176, 74, 58, 0.95);
+    border: 1px solid #d96a58;
+    color: #ffe8e3;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 12px 22px;
+    border-radius: 4px;
+    box-shadow: 0 4px 24px rgba(176, 74, 58, 0.4);
+    white-space: nowrap;
+    max-width: calc(100vw - 40px);
+    text-align: center;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+  }
+
+  .toast.hiding {
+    opacity: 0;
+  }
+
+  @media (max-width: 600px) {
+    .toast {
+      top: 58px;
+      font-size: 13px;
+      padding: 10px 16px;
+      white-space: normal;
+      max-width: calc(100vw - 32px);
+    }
+  }
+
   /* Mobile */
   @media (max-width: 600px) {
     .container { padding: 40px 16px 80px; }
@@ -371,6 +514,9 @@
     .chain-title { font-size: 20px; }
     .chain-actions { flex-direction: column; }
     .identity { padding: 22px; }
+    .sticky-bar { padding: 10px 16px 11px; }
+    .sticky-bar-selections { gap: 12px; }
+    .sticky-bar-hint { display: none; }
   }
 
   /* Fade in animation */
@@ -387,18 +533,16 @@
   .chain:nth-child(3) { animation-delay: 0.19s; }
   .chain:nth-child(4) { animation-delay: 0.26s; }
   .chain:nth-child(5) { animation-delay: 0.33s; }
-  .chain:nth-child(6) { animation-delay: 0.4s; }
-  .chain:nth-child(7) { animation-delay: 0.47s; }
 </style>
 </head>
 <body>
 
 <div class="container">
   <header>
-    <div class="eyebrow">BNI POWER TEAM</div>
-    <h1>七條鏈<br>共構彼此事業</h1>
-    <p class="subtitle">繼上次九宮格工作坊後，我們彙整出 7 條 PowerTeam 鏈。<br>請選出你「最厲害的」與「最想要的」資源，找到屬於你的成案夥伴。</p>
-    <div class="deadline">5 / 31 截止</div>
+    <div class="eyebrow">BNI Hua Urban+ Power Team</div>
+    <h1>五條鏈<br>共構彼此事業</h1>
+    <p class="subtitle">繼上次九宮格工作坊後，我們彙整出 5 條 PowerTeam 鏈。<br>請選出你「最厲害的」與「最想要的」資源，找到屬於你的成案夥伴。<br><span style="color:var(--gold-deep);font-size:13px;">⭐️ 最厲害的、❤️ 最想要的，各選 1 個（可以是同一條鏈）</span></p>
+    <div class="deadline">6 / 5 截止</div>
   </header>
 
   <div class="identity">
@@ -414,8 +558,25 @@
   <div class="chains" id="chainsContainer"></div>
 
   <div class="submit-section">
-    <button class="submit-btn" id="submitBtn" disabled>送 出 接 龍</button>
+    <button class="submit-btn" id="submitBtn" disabled>送出</button>
     <div class="status-msg" id="statusMsg"></div>
+  </div>
+</div>
+
+<!-- STICKY STATUS BAR -->
+<div class="sticky-bar" id="stickyBar">
+  <div class="sticky-bar-inner">
+    <div class="sticky-bar-selections">
+      <div class="sticky-bar-item">
+        <span class="sticky-bar-label">⭐️ 我最厲害的：</span>
+        <span class="sticky-bar-value" id="barStar">尚未選擇</span>
+      </div>
+      <div class="sticky-bar-item">
+        <span class="sticky-bar-label">❤️ 我最想要的：</span>
+        <span class="sticky-bar-value" id="barHeart">尚未選擇</span>
+      </div>
+    </div>
+    <div class="sticky-bar-hint">⭐️ 最厲害的、❤️ 最想要的，可以是同一條</div>
   </div>
 </div>
 
@@ -436,43 +597,36 @@ const CHAINS = [
     code: 'A',
     title: '地主改建整合鏈',
     tagline: '案源整合 × 地主召集 × 建商媒合 × 成案推動',
-    tags: ['地主召集', '危老都更', '案源開發', '土地整合', '土建融資源', '工程營造']
+    tags: ['地主召集', '危老都更', '案源開發', '土地整合', '土建融資源', '工程營造'],
+    leader: '即將出爐'
   },
   {
     code: 'B',
     title: '老屋現金流升級鏈',
     tagline: '翻新延壽 × 包租代管 × 收益設計',
-    tags: ['老屋翻新', '老屋延壽', '包租代管', '合法隔套', '月短租', '閒置物業活化']
+    tags: ['老屋翻新', '老屋延壽', '包租代管', '合法隔套', '月短租', '閒置物業活化'],
+    leader: '陳靖薇'
   },
   {
     code: 'C',
-    title: '高資產傳承活化鏈',
-    tagline: '資產盤點 × 傳承規劃 × 房產活化 × 投資配置',
-    tags: ['家族信託', '傳承規劃', '稅務規劃', '保險規劃', '金融貸款活化', '投資', '退休理財']
+    title: '高齡安居 x 資產傳承產業鏈',
+    tagline: '高齡安居 × 資產傳承 × 樂齡住宅 × 長照整合',
+    tags: ['家族信託', '傳承規劃', '稅務規劃', '退休理財', '投資配置', '高齡住宅', '醫療宅', '長照整合', '無障礙住宅'],
+    leader: '王春雄'
   },
   {
     code: 'D',
-    title: '高齡居住安全鏈',
-    tagline: '銀髮住宅 × 醫療宅 × 養生宅 × 長照整合',
-    tags: ['高齡住宅', '醫療宅', '養生宅', '長照整合', '安養村', '無障礙住宅']
+    title: '商用不動產升級鏈',
+    tagline: '商空升級 × 廠房建置 × 招商活化 × 倉儲物流',
+    tags: ['商空設計', '品牌展店', '商圈活化', '辦公室升級', '企業貸款', '工業空間', '建廠', '廠房升級', 'ESG', '倉儲物流'],
+    leader: '陳向柔'
   },
   {
     code: 'E',
-    title: '商業空間升級鏈',
-    tagline: '商空升級 × 品牌展店 × 招商活化 × 商圈再造',
-    tags: ['商空設計', '品牌展店', '展場設計', '商圈活化', '辦公室升級', '商旅活化', '企業貸款']
-  },
-  {
-    code: 'F',
-    title: '工業廠房升級鏈',
-    tagline: '工業廠房 × 建廠升級 × ESG × 倉儲物流',
-    tags: ['工業空間', '建廠', '廠房升級', '廠務系統', '特殊設備', '工廠登記', 'ESG', '倉儲物流', '派遣人力']
-  },
-  {
-    code: 'G',
     title: '房產客戶成長鏈',
     tagline: '小白財商 × 自住房 × 建案成交',
-    tags: ['財商課', '買房教育', '天賦分析', '職涯規劃', '首購', '裝修', '生活升級需求']
+    tags: ['財商課', '買房教育', '天賦分析', '職涯規劃', '首購', '裝修', '生活升級需求'],
+    leader: '張瓊安'
   }
 ];
 
@@ -480,6 +634,62 @@ let selections = { star: new Set(), heart: new Set() };
 const userNameInput = document.getElementById('userName');
 const submitBtn = document.getElementById('submitBtn');
 const statusMsg = document.getElementById('statusMsg');
+const barStar = document.getElementById('barStar');
+const barHeart = document.getElementById('barHeart');
+
+function updateStatusBar() {
+  const starChain = selections.star.size > 0 ? [...selections.star][0] : null;
+  const heartChain = selections.heart.size > 0 ? [...selections.heart][0] : null;
+  const starTitle = starChain ? CHAINS.find(c => c.code === starChain).title : null;
+  const heartTitle = heartChain ? CHAINS.find(c => c.code === heartChain).title : null;
+
+  barStar.textContent = starTitle || '尚未選擇';
+  barStar.className = 'sticky-bar-value' + (starTitle ? ' chosen-star' : '');
+  barHeart.textContent = heartTitle || '尚未選擇';
+  barHeart.className = 'sticky-bar-value' + (heartTitle ? ' chosen-heart' : '');
+}
+
+// Sticky bar scroll visibility
+(function () {
+  const bar = document.getElementById('stickyBar');
+  const headerEl = document.querySelector('header');
+  function onScroll() {
+    if (headerEl.getBoundingClientRect().bottom <= 0) {
+      bar.classList.add('visible');
+    } else {
+      bar.classList.remove('visible');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // 初始化（若已滾動再載入）
+})();
+
+// Toast（被擋提示）
+let _toastEl = null;
+let _toastTimer = null;
+function showToast(text) {
+  // 如果已有 toast，先移除舊的
+  if (_toastEl) {
+    _toastEl.remove();
+    _toastEl = null;
+  }
+  if (_toastTimer) clearTimeout(_toastTimer);
+
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = text;
+  document.body.appendChild(el);
+  _toastEl = el;
+
+  // 2.8 秒後淡出，淡出後移除
+  _toastTimer = setTimeout(() => {
+    el.classList.add('hiding');
+    setTimeout(() => {
+      if (el.parentNode) el.remove();
+      if (_toastEl === el) _toastEl = null;
+    }, 400);
+  }, 2800);
+}
 
 // Render chains
 function renderChains() {
@@ -489,6 +699,11 @@ function renderChains() {
       <div class="chain-marker"><span class="chain-letter">${c.code}</span></div>
       <h2 class="chain-title">${c.title}</h2>
       <div class="chain-tagline">${c.tagline}</div>
+      <div class="chain-leader">
+        <span class="chain-leader-label">組長</span>
+        <span class="chain-leader-sep">｜</span>
+        <span class="chain-leader-name">${c.leader}</span>
+      </div>
       <div class="chain-tags">
         ${c.tags.map(t => `<span class="chain-tag">${t}</span>`).join('')}
       </div>
@@ -508,13 +723,25 @@ function renderChains() {
       const chain = btn.dataset.chain;
       const type = btn.dataset.type;
       if (selections[type].has(chain)) {
+        // 已選取同一條 → toggle off
         selections[type].delete(chain);
         btn.classList.remove('active');
+      } else if (selections[type].size > 0) {
+        // 已選了另一條 → 擋住，頂部 toast 提示（含現有選取的鏈名）
+        const existingCode = [...selections[type]][0];
+        const existingTitle = CHAINS.find(c => c.code === existingCode).title;
+        const icon = type === 'star' ? '⭐️' : '❤️';
+        const label = type === 'star' ? '最厲害的' : '最想要的';
+        showToast(icon + '『' + label + '』只能選 1 個，想改請先取消『' + existingTitle + '』');
+        updateStatusBar();
+        return; // 不更新選取狀態，提前 return
       } else {
+        // 尚未選 → 正常選上
         selections[type].add(chain);
         btn.classList.add('active');
       }
       checkCanSubmit();
+      updateStatusBar();
     });
   });
 }
@@ -525,6 +752,19 @@ function checkCanSubmit() {
   submitBtn.disabled = !(hasName && hasSelection);
 }
 
+let _statusTimer = null;
+function showStatus(text, cls, autoClear) {
+  if (_statusTimer) clearTimeout(_statusTimer);
+  statusMsg.textContent = text;
+  statusMsg.className = 'status-msg' + (cls ? ' ' + cls : '');
+  if (autoClear) {
+    _statusTimer = setTimeout(() => {
+      statusMsg.textContent = '';
+      statusMsg.className = 'status-msg';
+    }, autoClear);
+  }
+}
+
 userNameInput.addEventListener('input', checkCanSubmit);
 
 // Submit → 送到 Google Apps Script，由它寫進 Google Sheet
@@ -533,8 +773,7 @@ submitBtn.addEventListener('click', async () => {
   if (!name) return;
 
   if (SCRIPT_URL.indexOf('PASTE_YOUR') !== -1) {
-    statusMsg.textContent = '⚠️ 系統尚未設定完成（管理者：請貼上 Apps Script 網址）';
-    statusMsg.className = 'status-msg error';
+    showStatus('⚠️ 系統尚未設定完成（管理者：請貼上 Apps Script 網址）', 'error');
     return;
   }
 
@@ -546,8 +785,7 @@ submitBtn.addEventListener('click', async () => {
   };
 
   submitBtn.disabled = true;
-  statusMsg.textContent = '送出中...';
-  statusMsg.className = 'status-msg';
+  showStatus('送出中...');
 
   try {
     // 用 text/plain 避免瀏覽器對 Apps Script 發出 CORS 預檢請求，
@@ -560,19 +798,17 @@ submitBtn.addEventListener('click', async () => {
     });
 
     // no-cors 模式下無法讀取回應內容，只要 fetch 沒拋錯就視為送達。
-    statusMsg.textContent = '✓ 已送出！感謝 ' + name + ' 的參與';
-    statusMsg.className = 'status-msg success';
+    showStatus('✓ 已送出！感謝 ' + name + ' 的參與', 'success', 6000);
 
     // Reset
     selections = { star: new Set(), heart: new Set() };
     document.querySelectorAll('.vote-btn').forEach(b => b.classList.remove('active'));
     userNameInput.value = '';
     submitBtn.disabled = true;
-    setTimeout(() => { statusMsg.textContent = ''; }, 6000);
+    updateStatusBar();
   } catch (err) {
     console.error(err);
-    statusMsg.textContent = '送出失敗，請檢查網路後再按一次送出';
-    statusMsg.className = 'status-msg error';
+    showStatus('送出失敗，請檢查網路後再按一次送出', 'error');
     submitBtn.disabled = false;
   }
 });
