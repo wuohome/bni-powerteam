@@ -332,10 +332,8 @@
     transform: scale(1.2);
   }
 
-  .vote-btn.heart.active {
-    background: linear-gradient(135deg, rgba(176, 74, 58, 0.18), rgba(176, 74, 58, 0.05));
-    border-color: var(--crimson);
-    color: #d96a58;
+  .vote-btn.active .icon::before {
+    content: '';
   }
 
   /* SUBMIT */
@@ -452,12 +450,8 @@
     transition: color 0.25s;
   }
 
-  .sticky-bar-value.chosen-star {
+  .sticky-bar-value.chosen {
     color: var(--gold-bright);
-  }
-
-  .sticky-bar-value.chosen-heart {
-    color: #d96a58;
   }
 
   .sticky-bar-hint {
@@ -542,18 +536,13 @@
   <header>
     <div class="eyebrow">BNI Hua Urban+ Power Team</div>
     <h1>五條鏈<br>共構彼此事業</h1>
-    <p class="subtitle">繼上次九宮格工作坊後，我們彙整出 5 條 PowerTeam 鏈。<br>請選出你「最厲害的」與「最想要的」資源，找到屬於你的成案夥伴。<br><span style="color:var(--gold-bright);font-size:13px;">⭐️ 最厲害的、❤️ 最想要的 各選 1 個 —— 建議選「同一條鏈」💡</span></p>
+    <p class="subtitle">繼上次九宮格工作坊後，我們彙整出 5 條 PowerTeam 鏈。<br>請選出你<strong>最想加入的產業鏈群組</strong>（最多 2 組），找到屬於你的成案夥伴。</p>
     <div class="deadline">6 / 6（五）23:59 截止</div>
   </header>
 
   <div class="identity">
     <span class="identity-label">您的大名</span>
     <input type="text" id="userName" placeholder="請輸入姓名後再勾選" autocomplete="off">
-  </div>
-
-  <div class="legend">
-    <div class="legend-item"><span class="legend-icon">⭐️</span><span>自己最厲害的</span></div>
-    <div class="legend-item"><span class="legend-icon">❤️</span><span>自己最想要的</span></div>
   </div>
 
   <div class="chains" id="chainsContainer"></div>
@@ -567,17 +556,10 @@
 <!-- STICKY STATUS BAR -->
 <div class="sticky-bar" id="stickyBar">
   <div class="sticky-bar-inner">
-    <div class="sticky-bar-selections">
-      <div class="sticky-bar-item">
-        <span class="sticky-bar-label">⭐️ 我最厲害的：</span>
-        <span class="sticky-bar-value" id="barStar">尚未選擇</span>
-      </div>
-      <div class="sticky-bar-item">
-        <span class="sticky-bar-label">❤️ 我最想要的：</span>
-        <span class="sticky-bar-value" id="barHeart">尚未選擇</span>
-      </div>
+    <div class="sticky-bar-item">
+      <span class="sticky-bar-label">我想加入的群組：</span>
+      <span class="sticky-bar-value" id="barGroups">尚未選擇</span>
     </div>
-    <div class="sticky-bar-hint">💡 建議 ⭐️ 和 ❤️ 選「同一條鏈」</div>
   </div>
 </div>
 
@@ -631,23 +613,21 @@ const CHAINS = [
   }
 ];
 
-let selections = { star: new Set(), heart: new Set() };
+let selectedGroups = new Set();
 const userNameInput = document.getElementById('userName');
 const submitBtn = document.getElementById('submitBtn');
 const statusMsg = document.getElementById('statusMsg');
-const barStar = document.getElementById('barStar');
-const barHeart = document.getElementById('barHeart');
+const barGroups = document.getElementById('barGroups');
 
 function updateStatusBar() {
-  const starChain = selections.star.size > 0 ? [...selections.star][0] : null;
-  const heartChain = selections.heart.size > 0 ? [...selections.heart][0] : null;
-  const starTitle = starChain ? CHAINS.find(c => c.code === starChain).title : null;
-  const heartTitle = heartChain ? CHAINS.find(c => c.code === heartChain).title : null;
-
-  barStar.textContent = starTitle || '尚未選擇';
-  barStar.className = 'sticky-bar-value' + (starTitle ? ' chosen-star' : '');
-  barHeart.textContent = heartTitle || '尚未選擇';
-  barHeart.className = 'sticky-bar-value' + (heartTitle ? ' chosen-heart' : '');
+  if (selectedGroups.size === 0) {
+    barGroups.textContent = '尚未選擇';
+    barGroups.className = 'sticky-bar-value';
+  } else {
+    const titles = [...selectedGroups].map(code => CHAINS.find(c => c.code === code).title);
+    barGroups.textContent = titles.join('、');
+    barGroups.className = 'sticky-bar-value chosen';
+  }
 }
 
 // Sticky bar scroll visibility
@@ -709,11 +689,8 @@ function renderChains() {
         ${c.tags.map(t => `<span class="chain-tag">${t}</span>`).join('')}
       </div>
       <div class="chain-actions">
-        <button class="vote-btn star" data-chain="${c.code}" data-type="star">
-          <span class="icon">⭐️</span><span>我最厲害的</span>
-        </button>
-        <button class="vote-btn heart" data-chain="${c.code}" data-type="heart">
-          <span class="icon">❤️</span><span>我最想要的</span>
+        <button class="vote-btn" data-chain="${c.code}">
+          <span class="icon">＋</span><span class="btn-label">我想加入這組</span>
         </button>
       </div>
     </div>
@@ -722,24 +699,22 @@ function renderChains() {
   document.querySelectorAll('.vote-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const chain = btn.dataset.chain;
-      const type = btn.dataset.type;
-      if (selections[type].has(chain)) {
-        // 已選取同一條 → toggle off
-        selections[type].delete(chain);
+      if (selectedGroups.has(chain)) {
+        // 已選 → toggle off
+        selectedGroups.delete(chain);
         btn.classList.remove('active');
-      } else if (selections[type].size > 0) {
-        // 已選了另一條 → 擋住，頂部 toast 提示（含現有選取的鏈名）
-        const existingCode = [...selections[type]][0];
-        const existingTitle = CHAINS.find(c => c.code === existingCode).title;
-        const icon = type === 'star' ? '⭐️' : '❤️';
-        const label = type === 'star' ? '最厲害的' : '最想要的';
-        showToast(icon + '『' + label + '』只能選 1 個，想改請先取消『' + existingTitle + '』');
-        updateStatusBar();
-        return; // 不更新選取狀態，提前 return
+        btn.querySelector('.icon').textContent = '＋';
+        btn.querySelector('.btn-label').textContent = '我想加入這組';
+      } else if (selectedGroups.size >= 2) {
+        // 已選 2 個，擋住
+        showToast('最多選 2 個群組喔～');
+        return;
       } else {
-        // 尚未選 → 正常選上
-        selections[type].add(chain);
+        // 正常選上
+        selectedGroups.add(chain);
         btn.classList.add('active');
+        btn.querySelector('.icon').textContent = '✓';
+        btn.querySelector('.btn-label').textContent = '已選這組';
       }
       checkCanSubmit();
       updateStatusBar();
@@ -749,7 +724,7 @@ function renderChains() {
 
 function checkCanSubmit() {
   const hasName = userNameInput.value.trim().length > 0;
-  const hasSelection = selections.star.size > 0 || selections.heart.size > 0;
+  const hasSelection = selectedGroups.size > 0;
   submitBtn.disabled = !(hasName && hasSelection);
 }
 
@@ -780,8 +755,7 @@ submitBtn.addEventListener('click', async () => {
 
   const submission = {
     name,
-    star: Array.from(selections.star).sort(),
-    heart: Array.from(selections.heart).sort(),
+    groups: Array.from(selectedGroups).sort(),
     submittedAt: new Date().toISOString()
   };
 
@@ -802,8 +776,12 @@ submitBtn.addEventListener('click', async () => {
     showStatus('✓ 已送出！感謝 ' + name + ' 的參與', 'success', 6000);
 
     // Reset
-    selections = { star: new Set(), heart: new Set() };
-    document.querySelectorAll('.vote-btn').forEach(b => b.classList.remove('active'));
+    selectedGroups = new Set();
+    document.querySelectorAll('.vote-btn').forEach(b => {
+      b.classList.remove('active');
+      b.querySelector('.icon').textContent = '＋';
+      b.querySelector('.btn-label').textContent = '我想加入這組';
+    });
     userNameInput.value = '';
     submitBtn.disabled = true;
     updateStatusBar();
